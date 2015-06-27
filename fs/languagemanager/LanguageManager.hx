@@ -49,7 +49,7 @@ class LanguageManager
 	private function new(path : String, language : String) 
 	{
 		languagesPath = path;
-		currentLanguage = (language == "") ? ENGLISH_LANGUAGE : language;
+		currentLanguage = (language == "") ? ENGLISH : language;
 	}
 	
 	public static function Translate(name : String) : String
