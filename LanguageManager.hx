@@ -1,4 +1,4 @@
-package fs.languagemanager;
+package;
 
 import openfl.Assets;
 
@@ -50,6 +50,7 @@ class LanguageManager
 	{
 		languagesPath = path;
 		currentLanguage = (language == "") ? ENGLISH : language;
+		languageData = new Map<String,String>();
 	}
 	
 	public static function Translate(name : String) : String
@@ -57,12 +58,24 @@ class LanguageManager
 		return languageData.get(name.toLowerCase());
 	}
 	
-	public static function LoadLanguage(lang : String) : Void
+	public static function ChangeLanguage(lang : String) : Void
+	{
+		currentLanguage = lang;
+		LoadXML();
+	}
+	
+	public static function GetCurrentLanguage() : String
+	{
+		return currentLanguage;
+	}
+	
+	public static function LoadXML(filename : String = "") : Void
 	{
 		var path, str, name, translation : String;
 		var xml : Xml;
 		
-		path = languagesPath + lang + ".xml";
+		filename = filename == "" ? currentLanguage : filename;
+		path = languagesPath + filename + ".xml";
 		
 		try
 		{
