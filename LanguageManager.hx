@@ -23,10 +23,12 @@ class LanguageManager
 	
 	private static var currentLanguage : String;
 	
-	public static function InitInstance(path : String, language : String = ""): LanguageManager
+	private static var defaultLanguage : String;
+	
+	public static function InitInstance(path : String,defaultLang : String , language : String = ""): LanguageManager
 	{
 		if (instance == null)
-			instance = new LanguageManager(path,language);
+			instance = new LanguageManager(path,defaultLang,language);
 				
 		return instance;
 	}
@@ -46,10 +48,11 @@ class LanguageManager
 	/*
 	 * Constructor
 	 */
-	private function new(path : String, language : String) 
+	private function new(path : String, defaultLang : String, language : String) 
 	{
 		languagesPath = path;
-		currentLanguage = (language == "") ? ENGLISH : language;
+		defaultLanguage = defaultLang;
+		currentLanguage = (language == "") ? defaultLanguage : language;
 		languageData = new Map<String,String>();
 	}
 	
