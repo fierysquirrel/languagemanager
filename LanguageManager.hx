@@ -1,6 +1,8 @@
 package;
 
+import flash.display.GraphicsStroke;
 import openfl.Assets;
+import openfl.system.Capabilities;
 
 class LanguageManager
 {
@@ -10,7 +12,7 @@ class LanguageManager
 	public static var SPANISH : String 		= "es";
 	public static var ENGLISH : String 		= "en";
 	public static var GERMAN : String 		= "de";
-	public static var JAPANESE : String 		= "jp";
+	public static var JAPANESE : String 	= "jp";
 	public static var ITALIAN : String 		= "it";
 	public static var FRENCH : String 		= "fr";
 	
@@ -21,14 +23,16 @@ class LanguageManager
 	
 	private static var languageData : Map<String,String>;
 	
+	private static var availableLanguages : Array<String>;
+	
 	private static var currentLanguage : String;
 	
 	private static var defaultLanguage : String;
 	
-	public static function InitInstance(path : String,defaultLang : String , language : String = ""): LanguageManager
+	public static function InitInstance(path : String,defaultLang : String = "", availableLanguages : Array<String> = null, language : String = ""): LanguageManager
 	{
 		if (instance == null)
-			instance = new LanguageManager(path,defaultLang,language);
+			instance = new LanguageManager(path,defaultLang,availableLanguages,language);
 				
 		return instance;
 	}
@@ -48,12 +52,23 @@ class LanguageManager
 	/*
 	 * Constructor
 	 */
-	private function new(path : String, defaultLang : String, language : String) 
+	private function new(path : String, defaultLang : String, availLanguages : Array<String>, language : String) 
 	{
 		languagesPath = path;
-		defaultLanguage = defaultLang;
+		defaultLanguage = defaultLang == "" ? ENGLISH : defaultLang;
+		availableLanguages = availLanguages == null ? [defaultLanguage] : availLanguages;
 		currentLanguage = (language == "") ? defaultLanguage : language;
 		languageData = new Map<String,String>();
+	}
+	
+	public static function SetDefaultLanguage(lan : String) : Void
+	{
+		defaultLanguage = lan;
+	}
+	
+	public static function SetAvailableLanguages(languages : Array<String>) : Void
+	{
+		availableLanguages = languages;
 	}
 	
 	public static function Translate(name : String) : String
@@ -99,5 +114,30 @@ class LanguageManager
 		{
 			trace(e);
 		}
+	}
+	
+	public static function GetDeviceLanguage() : String
+	{
+		var lang, devLang : String;
+		
+		lang = Capabilities.language;
+		devLang = defaultLanguage;
+		
+		if (availableLanguages != null)
+		{
+			//Spanish
+			if (~/es/.match(lang) && availableLanguages.indexOf(SPANISH) != -1)
+				devLang = SPANISH;
+			
+			//English
+			if (~/en/.match(lang) && availableLanguages.indexOf(ENGLISH) != -1)
+				devLang = ENGLISH;
+				
+			//Japanese
+			if (~/ja/.match(lang) && availableLanguages.indexOf(JAPANESE) != -1)
+				devLang = JAPANESE;
+		}
+			
+		return devLang;
 	}
 }
