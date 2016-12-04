@@ -12,9 +12,10 @@ class LanguageManager
 	public static var SPANISH : String 		= "es";
 	public static var ENGLISH : String 		= "en";
 	public static var GERMAN : String 		= "de";
-	public static var JAPANESE : String 	= "jp";
+	public static var JAPANESE : String 		= "jp";
 	public static var ITALIAN : String 		= "it";
 	public static var FRENCH : String 		= "fr";
+	public static var CHINESE : String 		= "zh";
 	
 	
 	private static var instance : LanguageManager;
@@ -136,6 +137,10 @@ class LanguageManager
 			//Japanese
 			if (~/ja/.match(lang) && availableLanguages.indexOf(JAPANESE) != -1)
 				devLang = JAPANESE;
+				
+			//Chinese
+			if (~/zh/.match(lang) && availableLanguages.indexOf(CHINESE) != -1)
+				devLang = CHINESE;
 		}
 			
 		return devLang;
